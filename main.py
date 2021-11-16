@@ -97,14 +97,14 @@ def printValue():
     global in_name
 
     # Gets the name inputted
-    in_name = entry.get()
+    in_name = entryName.get()
     os.rename(temp_name,('known_people/'+in_name+'.jpg'))
     top.destroy()
 
 def new_person():
     global temp_name
     global i
-    global entry
+    global entryName
     global top
 
     ret, frame = cap.read()
@@ -118,9 +118,17 @@ def new_person():
     top = Toplevel(window)
     top.geometry("750x250")
 
-    # Create  an Entry Widget in the Toplevel window
-    entry = Entry(top, width= 25)
-    entry.pack()
+    # Create an Entry Widget in the Toplevel window for name
+    labelName = Label(top, text = "Name")
+    entryName = Entry(top, width= 25)
+    labelName.pack()
+    entryName.pack()
+
+    # Create an Entry Widget in the Toplevel window for password
+    labelPass = Label(top, text = "Password")
+    entryPass = Entry(top, width= 25)
+    entryPass.pack()
+    labelPass.pack()
 
     # Creates a Button Widget in the Toplevel Window
     button= Button(top, text="Ok", command=printValue)
