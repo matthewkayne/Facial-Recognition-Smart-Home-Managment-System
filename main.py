@@ -1,9 +1,10 @@
 # Imports all the needed libraries
-import face_recognition, cv2, os, glob, csv, PIL
+import face_recognition, cv2, os, glob, sqlite3
 import numpy as np
 import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
+import database
 
 
 # Get a reference to webcam #0 (the default one)
@@ -95,9 +96,12 @@ i=0
 
 def printValue():
     global in_name
+    global in_pass
 
     # Gets the name inputted
     in_name = entryName.get()
+    in_pass = entryPass.get()
+
     os.rename(temp_name,('known_people/'+in_name+'.jpg'))
     top.destroy()
 
@@ -105,6 +109,7 @@ def new_person():
     global temp_name
     global i
     global entryName
+    global entryPass
     global top
 
     ret, frame = cap.read()
@@ -127,12 +132,15 @@ def new_person():
     # Create an Entry Widget in the Toplevel window for password
     labelPass = Label(top, text = "Password")
     entryPass = Entry(top, width= 25)
-    entryPass.pack()
     labelPass.pack()
+    entryPass.pack()
 
     # Creates a Button Widget in the Toplevel Window
     button= Button(top, text="Ok", command=printValue)
     button.pack(pady=5, side= TOP)
+
+
+
 
 # Sets up GUI    
 window = tk.Tk()
