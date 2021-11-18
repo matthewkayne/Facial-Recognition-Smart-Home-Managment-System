@@ -1,4 +1,3 @@
-
 import sqlite3
 
 # define connection and cursor

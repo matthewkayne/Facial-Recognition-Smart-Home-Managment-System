@@ -112,6 +112,8 @@ def printValue():
     os.rename(temp_name,('known_people/'+fileName))
     top.destroy()
 
+
+
 def new_person():
     global temp_name
     global i
@@ -146,8 +148,45 @@ def new_person():
     button= Button(top, text="Ok", command=printValue)
     button.pack(pady=5, side= TOP)
 
+def settings():
+    
+    settingsPage = Toplevel(window)
+    settingsPage.geometry("1000x1000")
 
+    tempLabel = Label(settingsPage, text = "Settings Page")
+    tempLabel.pack()
 
+def accountCheck(inName, inPass):
+    database.cursor.execute("SELECT username from accounts WHERE username = ? AND password = ?",(inName,inPass))
+    if not database.cursor.fetchall():  # An empty result evaluates to False.
+        print("Login failed")
+    else:
+        print("Welcome")
+        settings()
+
+def log_in():
+    global logInName
+    global logInPass
+    global check
+
+    logInPage = Toplevel(window)
+    logInPage.geometry("750x250")
+    # Create an Entry Widget in the LogInPage window for name
+    labelName = Label(logInPage, text = "Name")
+    logInName = Entry(logInPage, width= 25)
+    labelName.pack()
+    logInName.pack()
+
+    # Create an Entry Widget in the LogInPage window for password
+    labelPass = Label(logInPage, text = "Password")
+    logInPass= Entry(logInPage, width= 25)
+    labelPass.pack()
+    logInPass.pack()
+
+    
+    # Creates a Button Widget in the LogInPage Window
+    button= Button(logInPage, text="Ok", command=lambda: [accountCheck(logInName.get(),logInPass.get()),logInPage.destroy()])
+    button.pack(pady=5, side= TOP)
 
 # Sets up GUI    
 window = tk.Tk()
@@ -166,6 +205,9 @@ who_btn.grid(row = 300, column = 90)
 
 new_btn = tk.Button(window,text="New Person?", height = 2, width = 10, command=new_person)
 new_btn.grid(row = 300, column = 250)
+
+login_btn = tk.Button(window,text="Log In", height = 2, width = 10, command=log_in)
+login_btn.grid(row = 300, column = 300)
 
 label = Label(window, width=450, height=450)
 label.grid(row=140, column=190)
