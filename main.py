@@ -89,10 +89,12 @@ def run():
                 return name
                 
             face_names.append(name)
+            
    
     process_this_frame = not process_this_frame
 
 i=0
+
 def printValue():
     global in_name
     global in_pass
@@ -100,9 +102,14 @@ def printValue():
     # Gets the name inputted
     in_name = entryName.get()
     in_pass = entryPass.get()
-    database.addAccount(in_name,in_pass)
 
-    os.rename(temp_name,('known_people/'+in_name+'.jpg'))
+    fileName = in_name.lower()
+    fileName = fileName.replace(" ","-")
+    fileName= fileName+'.jpg'
+
+    database.addAccount(in_name,in_pass,fileName)
+
+    os.rename(temp_name,('known_people/'+fileName))
     top.destroy()
 
 def new_person():
