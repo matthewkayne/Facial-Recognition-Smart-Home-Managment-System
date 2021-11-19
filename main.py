@@ -6,7 +6,6 @@ from tkinter import *
 from PIL import Image, ImageTk
 import database
 
-
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
@@ -90,7 +89,6 @@ def run():
                 
             face_names.append(name)
             
-   
     process_this_frame = not process_this_frame
 
 i=0
@@ -113,7 +111,6 @@ def printValue():
     top.destroy()
 
 
-
 def new_person():
     global temp_name
     global i
@@ -123,11 +120,9 @@ def new_person():
 
     ret, frame = cap.read()
 
-    
     temp_name='image'+str(i)+'.jpg'
     cv2.imwrite(temp_name, frame)
     i+=1
-
 
     top = Toplevel(window)
     top.geometry("750x250")
@@ -156,6 +151,7 @@ def settings():
     tempLabel = Label(settingsPage, text = "Settings Page")
     tempLabel.pack()
 
+
 def accountCheck(inName, inPass):
     database.cursor.execute("SELECT username from accounts WHERE username = ? AND password = ?",(inName,inPass))
     if not database.cursor.fetchall():  # An empty result evaluates to False.
@@ -167,7 +163,6 @@ def accountCheck(inName, inPass):
 def log_in():
     global logInName
     global logInPass
-    global check
 
     logInPage = Toplevel(window)
     logInPage.geometry("750x250")
@@ -183,7 +178,6 @@ def log_in():
     labelPass.pack()
     logInPass.pack()
 
-    
     # Creates a Button Widget in the LogInPage Window
     button= Button(logInPage, text="Ok", command=lambda: [accountCheck(logInName.get(),logInPass.get()),logInPage.destroy()])
     button.pack(pady=5, side= TOP)
