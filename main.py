@@ -143,8 +143,13 @@ def new_person():
     button= Button(top, text="Ok", command=printValue)
     button.pack(pady=5, side= TOP)
 
+def store(userId, deviceId, state):
+    database.cursor.execute("INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)",(userId,deviceId,state))
+
 def settings():
-    
+    global settingsPage
+    global light_1Var
+
     settingsPage = Toplevel(window)
     settingsPage.geometry("1000x1000")
 
@@ -152,12 +157,27 @@ def settings():
     tempLabel.pack()
 
 
+
+    light_1Var = IntVar()
+    light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1Var)
+    light_1CheckButton.pack()
+   
+    confirmButton = Button(settingsPage, text="Confirm", command= lambda: store(1,1,1))
+    confirmButton.pack(pady=5, side = BOTTOM)
+
+
+def getUserId(userName):
+    database.cursor.execute("SELECT id FROM accounts WHERE username=?",(userName,))
+    return sum(database.cursor.fetchone())   
+
 def accountCheck(inName, inPass):
+    global userId
     database.cursor.execute("SELECT username from accounts WHERE username = ? AND password = ?",(inName,inPass))
     if not database.cursor.fetchall():  # An empty result evaluates to False.
         print("Login failed")
     else:
         print("Welcome")
+        userId = getUserId(inName)
         settings()
 
 def log_in():
@@ -182,6 +202,8 @@ def log_in():
     button= Button(logInPage, text="Ok", command=lambda: [accountCheck(logInName.get(),logInPass.get()),logInPage.destroy()])
     button.pack(pady=5, side= TOP)
 
+    
+    
 # Sets up GUI    
 window = tk.Tk()
 window.geometry("1000x1000")
@@ -207,6 +229,7 @@ label = Label(window, width=450, height=450)
 label.grid(row=140, column=190)
 
 cap = cv2.VideoCapture(0)
+
 
 # Define function to show frame
 def show_frames():
