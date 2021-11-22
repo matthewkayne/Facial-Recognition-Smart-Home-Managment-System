@@ -1,0 +1,4 @@
+# System file
+.DS_Store
+# Python files
+__pycache__/
