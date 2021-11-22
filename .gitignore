@@ -1,0 +1,7 @@
+# System file
+.DS_Store
+# Python files
+__pycache__/
+# User specificfiles
+database.db
+known_people/*
