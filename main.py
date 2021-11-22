@@ -1,5 +1,6 @@
 # Imports all the needed libraries
-import face_recognition, cv2, os, glob, sqlite3
+from posixpath import join
+import face_recognition, cv2, os, glob, requests
 import numpy as np
 import tkinter as tk
 from tkinter import *
@@ -98,7 +99,6 @@ class Device:
     self.deviceid = deviceid
     self.state = state
 
-
 def printValue():
     global in_name
     global in_pass
@@ -180,7 +180,7 @@ def getUserId(userName):
 
 def accountCheck(inName, inPass):
     global userId
-    database.cursor.execute("SELECT username from accounts WHERE username = ? AND password = ?",(inName,inPass))
+    database.cursor.execute("SELECT username FROM accounts WHERE username = ? AND password = ?",(inName,inPass))
     if not database.cursor.fetchall():  # An empty result evaluates to False.
         print("Login failed")
     else:
@@ -209,7 +209,22 @@ def log_in():
     # Creates a Button Widget in the LogInPage Window
     button= Button(logInPage, text="Ok", command=lambda: [accountCheck(logInName.get(),logInPass.get()),logInPage.destroy()])
     button.pack(pady=5, side= TOP)
-  
+
+def faceControl():
+    database.cursor.execute("SELECT id FROM accounts WHERE filename = ?",((name+".jpg").replace(" ",""),))
+    fcUserId = sum(database.cursor.fetchone())
+    database.cursor.execute("SELECT deviceid FROM link WHERE userid = ?",(fcUserId,))
+    fcDeviceId = sum(database.cursor.fetchone())
+    database.cursor.execute("SELECT devicename FROM devices WHERE id = ?",(fcDeviceId,))
+    fcDeviceName = database.cursor.fetchone()[0]
+    database.cursor.execute("SELECT state FROM link WHERE userid = ? AND deviceId = ?",(fcUserId,fcDeviceId))
+    fcState = sum(database.cursor.fetchone())
+    if fcState == 0:
+        fcStateString = "_off"
+    else:
+        fcStateString = "_on"
+    requests.post("https://maker.ifttt.com/trigger/"+fcDeviceName+fcStateString+"/with/key/fZQacqZEzguEOUTC2dSECCzzSSE7LmZdtiETmnAIWQx")
+
 # Sets up GUI    
 window = tk.Tk()
 window.geometry("1000x1000")
@@ -222,7 +237,7 @@ text_box = tk.Text(window, width = 25, height = 10, font=("Helvetica", 15))
 text_box.grid(row = 30, column = 200)
 text_box.insert("end-1c", " ")
 
-who_btn = tk.Button(window,text="Who am I?", height = 2, width = 10, command=run)
+who_btn = tk.Button(window,text="Who am I?", height = 2, width = 10, command=lambda: [run(), faceControl()])
 who_btn.grid(row = 300, column = 90)
 
 new_btn = tk.Button(window,text="New Person?", height = 2, width = 10, command=new_person)
