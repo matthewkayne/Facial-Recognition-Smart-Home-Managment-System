@@ -158,7 +158,6 @@ def storeLink(tempDeviceId):
 
 def settings():
     global settingsPage
-    global light_1Var
     global light_1
 
     settingsPage = Toplevel(window)
