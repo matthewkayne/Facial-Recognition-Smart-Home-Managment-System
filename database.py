@@ -28,4 +28,4 @@ def addAccount(mainName,mainPass,mainFileName):
 def cleanTable(tableName):
     cursor.execute("DELETE FROM "+tableName)
     connection.commit()
-#cleanTable("accounts")
+    

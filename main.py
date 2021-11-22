@@ -93,6 +93,12 @@ def run():
 
 i=0
 
+class Device:
+  def __init__(self, id, state):
+    self.id = id
+    self.state = state
+
+
 def printValue():
     global in_name
     global in_pass
@@ -142,14 +148,18 @@ def new_person():
     button= Button(top, text="Ok", command=printValue)
     button.pack(pady=5, side= TOP)
 
-def storeLink():
-    database.cursor.execute("INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)",(userId,light_1Id,1))
+def storeLink(tempDeviceId):
+    database.cursor.execute("SELECT userid from link WHERE userid = ? AND deviceid = ?",(userId,tempDeviceId))
+    if not database.cursor.fetchall():  # An empty result evaluates to False.
+        database.cursor.execute("""INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)""",(userId,tempDeviceId,1))
+    else:
+        database.cursor.execute("""UPDATE link SET state=? WHERE userid=? AND deviceid=?""",(0,userId,tempDeviceId))
     database.connection.commit()
 
 def settings():
     global settingsPage
     global light_1Var
-    global light_1Id
+    global light_1
 
     settingsPage = Toplevel(window)
     settingsPage.geometry("1000x1000")
@@ -157,12 +167,12 @@ def settings():
     tempLabel = Label(settingsPage, text = "Settings Page")
     tempLabel.pack()
     
-    light_1Var = IntVar()
-    light_1Id = 1
-    light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1Var)
+    light_1 = Device(1, BooleanVar())
+    light_1.state.set(False)
+    light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1.state, command = lambda: storeLink(light_1.id))
     light_1CheckButton.pack()
-   
-    confirmButton = Button(settingsPage, text="Confirm", command=storeLink)
+    
+    confirmButton = Button(settingsPage, text="Confirm", command=settingsPage.destroy)
     confirmButton.pack(pady=5, side = BOTTOM)
 
 def getUserId(userName):
