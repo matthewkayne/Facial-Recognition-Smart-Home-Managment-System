@@ -5,6 +5,7 @@ import numpy as np
 import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
+# Imporrts the database.py file
 import database
 
 # Get a reference to webcam #0 (the default one)
@@ -99,7 +100,7 @@ class Device:
     self.deviceid = deviceid
     self.state = state
 
-def printValue():
+def saveAccount():
     global in_name
     global in_pass
 
@@ -145,7 +146,7 @@ def new_person():
     entryPass.pack()
 
     # Creates a Button Widget in the Toplevel Window
-    button= Button(top, text="Ok", command=printValue)
+    button= Button(top, text="Ok", command=saveAccount)
     button.pack(pady=5, side= TOP)
 
 def storeLink(tempDeviceId):
@@ -180,6 +181,7 @@ def getUserId(userName):
 
 def accountCheck(inName, inPass):
     global userId
+
     database.cursor.execute("SELECT username FROM accounts WHERE username = ? AND password = ?",(inName,inPass))
     if not database.cursor.fetchall():  # An empty result evaluates to False.
         print("Login failed")
@@ -219,6 +221,7 @@ def faceControl():
     fcDeviceName = database.cursor.fetchone()[0]
     database.cursor.execute("SELECT state FROM link WHERE userid = ? AND deviceId = ?",(fcUserId,fcDeviceId))
     fcState = sum(database.cursor.fetchone())
+    
     if fcState == 0:
         fcStateString = "_off"
     else:
