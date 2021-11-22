@@ -229,7 +229,6 @@ cap = cv2.VideoCapture(0)
 
 # Define function to show frame
 def show_frames():
-    global i
 
     # Get the latest frame and convert into Image
     cv2image= cv2.cvtColor(cap.read()[1],cv2.COLOR_BGR2RGB)
