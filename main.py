@@ -94,8 +94,8 @@ def run():
 i=0
 
 class Device:
-  def __init__(self, id, state):
-    self.id = id
+  def __init__(self, deviceid, state):
+    self.deviceid = deviceid
     self.state = state
 
 
@@ -169,7 +169,7 @@ def settings():
     
     light_1 = Device(1, BooleanVar())
     light_1.state.set(False)
-    light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1.state, command = lambda: storeLink(light_1.id))
+    light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1.state, command = lambda: storeLink(light_1.deviceid))
     light_1CheckButton.pack()
     
     confirmButton = Button(settingsPage, text="Confirm", command=settingsPage.destroy)
