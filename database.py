@@ -16,6 +16,8 @@ devices(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT, url TEXT)""")
 cursor.execute("""CREATE TABLE IF NOT EXISTS
 link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, state INTEGER DEFAULT 0, FOREIGN KEY(userid) REFERENCES accounts(id), FOREIGN KEY(deviceid) REFERENCES devices(id))""")
 # use most recent record or the same userId and deviceId combination
+
+
 connection.commit()
 
 def addAccount(mainName,mainPass,mainFileName):
