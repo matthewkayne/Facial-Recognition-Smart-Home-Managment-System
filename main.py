@@ -183,7 +183,7 @@ def accountCheck(inName, inPass):
     global userId
 
     database.cursor.execute("SELECT username FROM accounts WHERE username = ? AND password = ?",(inName,inPass))
-    if not database.cursor.fetchall():  # An empty result evaluates to False.
+    if not database.cursor.fetchall():
         print("Login failed")
     else:
         print("Welcome")
