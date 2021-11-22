@@ -16,12 +16,9 @@ devices(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT, url TEXT)""")
 # create link table
 cursor.execute("""CREATE TABLE IF NOT EXISTS
 link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, state INTEGER DEFAULT 0, FOREIGN KEY(userid) REFERENCES accounts(id), FOREIGN KEY(deviceid) REFERENCES devices(id))""")
+# use most recent record or the same userId and deviceId combination
 
 connection.commit()
-
-def getUserId(userName):
-    cursor.execute("SELECT id FROM accounts WHERE username=?",(userName))
-    return cursor.fetchone()
 
 def addAccount(mainName,mainPass,mainFileName):
     cursor.execute("INSERT INTO accounts (username, password, filename) VALUES (?, ?, ?)",(mainName,mainPass,mainFileName))
@@ -32,4 +29,3 @@ def cleanTable(tableName):
     cursor.execute("DELETE FROM "+tableName)
     connection.commit()
 #cleanTable("accounts")
-

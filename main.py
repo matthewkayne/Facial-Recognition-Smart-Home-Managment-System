@@ -110,7 +110,6 @@ def printValue():
     os.rename(temp_name,('known_people/'+fileName))
     top.destroy()
 
-
 def new_person():
     global temp_name
     global i
@@ -143,28 +142,28 @@ def new_person():
     button= Button(top, text="Ok", command=printValue)
     button.pack(pady=5, side= TOP)
 
-def store(userId, deviceId, state):
-    database.cursor.execute("INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)",(userId,deviceId,state))
+def storeLink():
+    database.cursor.execute("INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)",(userId,light_1Id,1))
+    database.connection.commit()
 
 def settings():
     global settingsPage
     global light_1Var
+    global light_1Id
 
     settingsPage = Toplevel(window)
     settingsPage.geometry("1000x1000")
 
     tempLabel = Label(settingsPage, text = "Settings Page")
     tempLabel.pack()
-
-
-
+    
     light_1Var = IntVar()
+    light_1Id = 1
     light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1Var)
     light_1CheckButton.pack()
    
-    confirmButton = Button(settingsPage, text="Confirm", command= lambda: store(1,1,1))
+    confirmButton = Button(settingsPage, text="Confirm", command=storeLink)
     confirmButton.pack(pady=5, side = BOTTOM)
-
 
 def getUserId(userName):
     database.cursor.execute("SELECT id FROM accounts WHERE username=?",(userName,))
@@ -201,9 +200,7 @@ def log_in():
     # Creates a Button Widget in the LogInPage Window
     button= Button(logInPage, text="Ok", command=lambda: [accountCheck(logInName.get(),logInPass.get()),logInPage.destroy()])
     button.pack(pady=5, side= TOP)
-
-    
-    
+  
 # Sets up GUI    
 window = tk.Tk()
 window.geometry("1000x1000")
@@ -229,7 +226,6 @@ label = Label(window, width=450, height=450)
 label.grid(row=140, column=190)
 
 cap = cv2.VideoCapture(0)
-
 
 # Define function to show frame
 def show_frames():
