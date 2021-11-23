@@ -6,7 +6,7 @@ cursor = connection.cursor()
 
 # Create accounts table
 cursor.execute("""CREATE TABLE IF NOT EXISTS
-accounts(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, filename TEXT)""")
+accounts(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, email TEXT,filename TEXT)""")
 
 # Create devices table
 cursor.execute("""CREATE TABLE IF NOT EXISTS
@@ -19,8 +19,8 @@ link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, sta
 connection.commit()
 
 # Adds new row to accounts table
-def addAccount(mainName,mainPass,mainFileName):
-    cursor.execute("INSERT INTO accounts (username, password, filename) VALUES (?, ?, ?)",(mainName,mainPass,mainFileName))
+def addAccount(mainName,mainPass,mainEmail,mainFileName):
+    cursor.execute("INSERT INTO accounts (username, password, email,filename) VALUES (?, ?, ?, ?)",(mainName,mainPass,mainEmail,mainFileName))
     connection.commit()
     
 # Adds new row to devices table

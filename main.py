@@ -1,12 +1,13 @@
 # Imports all the needed libraries
 from posixpath import join
+from cv2 import data
 import face_recognition, cv2, os, glob, requests
 import numpy as np
 import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
-# Imporrts the database.py file
-import database
+# Imporrts the database.py and smtp.py file
+import database, smtp
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -107,12 +108,13 @@ def saveAccount():
     # Gets the name inputted
     in_name = entryName.get()
     in_pass = entryPass.get()
+    in_email = entryEmail.get()
 
     fileName = in_name.lower()
     fileName = fileName.replace(" ","-")
     fileName= fileName+'.jpg'
 
-    database.addAccount(in_name,in_pass,fileName)
+    database.addAccount(in_name,in_pass,in_email,fileName)
 
     os.rename(temp_name,('known_people/'+fileName))
     top.destroy()
@@ -122,6 +124,7 @@ def new_person():
     global i
     global entryName
     global entryPass
+    global entryEmail
     global top
 
     ret, frame = cap.read()
@@ -138,6 +141,12 @@ def new_person():
     entryName = Entry(top, width= 25)
     labelName.pack()
     entryName.pack()
+
+    # Create an Entry Widget in the LogInPage window for email
+    labelEmail = Label(top, text = "Email")
+    entryEmail = Entry(top, width= 25)
+    labelEmail.pack()
+    entryEmail.pack()
 
     # Create an Entry Widget in the Toplevel window for password
     labelPass = Label(top, text = "Password")
@@ -172,6 +181,14 @@ def settings():
     light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1.state, command = lambda: storeLink(light_1.deviceid))
     light_1CheckButton.pack()
     
+    database.cursor.execute("SELECT email FROM accounts WHERE username = ? AND password = ?",(logInName.get(),logInPass.get()))
+    email = database.cursor.fetchone()
+    database.cursor.execute("SELECT * FROM accounts WHERE username = ? AND password = ?",(logInName.get(),logInPass.get(),))
+    data = database.cursor.fetchall()
+
+    dataButton = Button(settingsPage, text="Send My Private Data", command= lambda: [smtp.sendData(email[0],str(data))])
+    dataButton.pack(pady=5, side = BOTTOM)
+    
     confirmButton = Button(settingsPage, text="Confirm", command=settingsPage.destroy)
     confirmButton.pack(pady=5, side = BOTTOM)
 
@@ -184,9 +201,8 @@ def accountCheck(inName, inPass):
 
     database.cursor.execute("SELECT username FROM accounts WHERE username = ? AND password = ?",(inName,inPass))
     if not database.cursor.fetchall():
-        print("Login failed")
+        pass
     else:
-        print("Welcome")
         userId = getUserId(inName)
         settings()
 
@@ -196,8 +212,9 @@ def log_in():
 
     logInPage = Toplevel(window)
     logInPage.geometry("750x250")
+    
     # Create an Entry Widget in the LogInPage window for name
-    labelName = Label(logInPage, text = "Name")
+    labelName = Label(logInPage, text = "Full Name")
     logInName = Entry(logInPage, width= 25)
     labelName.pack()
     logInName.pack()
