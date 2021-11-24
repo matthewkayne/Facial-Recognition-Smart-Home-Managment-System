@@ -1,13 +1,13 @@
 # Imports all the needed libraries
 from posixpath import join
 from cv2 import data
-import face_recognition, cv2, os, glob, requests
+import face_recognition, cv2, os, glob, requests, smtplib
 import numpy as np
 import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
-# Imporrts the database.py and smtp.py file
-import database, smtp
+# Imporrts the database.py file
+import database
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -169,7 +169,33 @@ def storeLink(tempDeviceId,deviceState):
     else:
         database.cursor.execute("""UPDATE link SET state=? WHERE userid=? AND deviceid=?""",(deviceState,userId,tempDeviceId))
     database.connection.commit()
+    
+# Sends email to email supplied in parameter
+def sendData(recipientEmail,recipientData):
+    gmail_user = 'ALevelProject1@gmail.com'
+    gmail_password = 'Password12!'
 
+    to = [recipientEmail]
+    subject = 'Your Private Data'
+    body = recipientData
+
+    email_text = """\
+    From: %s
+    To: %s
+    Subject: %s
+
+    %s
+    """ % (gmail_user, ", ".join(to), subject, body)
+
+    try:
+        smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        smtp_server.ehlo()
+        smtp_server.login(gmail_user, gmail_password)
+        smtp_server.sendmail(gmail_user, to, email_text)
+        smtp_server.close()
+    except Exception as ex:
+        print ("Something went wrong….",ex)
+        
 def settings():
     global settingsPage
     global light_1
@@ -193,7 +219,7 @@ def settings():
     database.cursor.execute("SELECT * FROM accounts WHERE username = ? AND password = ?",(logInName.get(),logInPass.get(),))
     data = database.cursor.fetchall()
 
-    dataButton = Button(settingsPage, text="Send My Private Data", command= lambda: [smtp.sendData(email[0],str(data))])
+    dataButton = Button(settingsPage, text="Send My Private Data", command= lambda: [sendData(email[0],str(data))])
     dataButton.pack(pady=5, side = BOTTOM)
     
     confirmButton = Button(settingsPage, text="Confirm", command=settingsPage.destroy)
