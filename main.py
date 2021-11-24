@@ -134,6 +134,8 @@ def new_person():
     i+=1
 
     top = Toplevel(window)
+    top.title("Create Account")
+
     top.geometry("750x250")
 
     # Create an Entry Widget in the Toplevel window for name
@@ -171,6 +173,8 @@ def settings():
     global light_1
 
     settingsPage = Toplevel(window)
+    settingsPage.title("Settings")
+
     settingsPage.geometry("1000x1000")
 
     tempLabel = Label(settingsPage, text = "Settings Page")
@@ -211,6 +215,8 @@ def log_in():
     global logInPass
 
     logInPage = Toplevel(window)
+    logInPage.title("Log In")
+
     logInPage.geometry("750x250")
     
     # Create an Entry Widget in the LogInPage window for name
@@ -247,6 +253,7 @@ def faceControl():
 
 # Sets up GUI    
 window = tk.Tk()
+window.title("A-Level-Project")
 window.geometry("1000x1000")
 
 # Allows the esc key to be used to close the GUI
