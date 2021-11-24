@@ -161,11 +161,13 @@ def new_person():
     button.pack(pady=5, side= TOP)
 
 def storeLink(tempDeviceId):
-    database.cursor.execute("SELECT userid from link WHERE userid = ? AND deviceid = ?",(userId,tempDeviceId))
+    print(userId)
+    print(tempDeviceId)
+    database.cursor.execute("SELECT id from link WHERE userid = ? AND deviceid = ?",(userId,tempDeviceId))
     if not database.cursor.fetchall():  # An empty result evaluates to False.
-        database.cursor.execute("""INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)""",(userId,tempDeviceId,1))
+        database.cursor.execute("""INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)""",(userId,tempDeviceId,light_1.state.get()))
     else:
-        database.cursor.execute("""UPDATE link SET state=? WHERE userid=? AND deviceid=?""",(0,userId,tempDeviceId))
+        database.cursor.execute("""UPDATE link SET state=? WHERE userid=? AND deviceid=?""",(light_1.state.get(),userId,tempDeviceId))
     database.connection.commit()
 
 def settings():
@@ -181,7 +183,7 @@ def settings():
     tempLabel.pack()
     
     light_1 = Device(1, BooleanVar())
-    light_1.state.set(False)
+    light_1.state.set(True)
     light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1.state, command = lambda: storeLink(light_1.deviceid))
     light_1CheckButton.pack()
     
