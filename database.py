@@ -10,7 +10,7 @@ accounts(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, ema
 
 # Create devices table
 cursor.execute("""CREATE TABLE IF NOT EXISTS
-devices(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT, url TEXT)""")
+devices(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""")
 
 # Create link table
 cursor.execute("""CREATE TABLE IF NOT EXISTS
@@ -24,11 +24,12 @@ def addAccount(mainName,mainPass,mainEmail,mainFileName):
     connection.commit()
     
 # Adds new row to devices table
-def addDevice(deviceName, deviceURL):
-    cursor.execute("INSERT INTO devices (devicename, url) VALUES (?, ?, ?)",(deviceName,deviceURL))
+def addDevice(deviceName):
+    cursor.execute("INSERT INTO devices (devicename) VALUES (?)",(deviceName,))
     connection.commit()
 
 # Emptys out entire table
 def cleanTable(tableName):
     cursor.execute("DELETE FROM "+tableName)
     connection.commit()
+

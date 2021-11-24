@@ -1,9 +1,9 @@
 import smtplib
 
+# Sends email to email supplied in parameter
 def sendData(recipientEmail,recipientData):
     gmail_user = 'ALevelProject1@gmail.com'
     gmail_password = 'Password12!'
-
 
     to = [recipientEmail]
     subject = 'Your Private Data'
