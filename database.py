@@ -32,4 +32,3 @@ def addDevice(deviceName):
 def cleanTable(tableName):
     cursor.execute("DELETE FROM "+tableName)
     connection.commit()
-
