@@ -160,14 +160,14 @@ def new_person():
     button= Button(top, text="Ok", command=saveAccount)
     button.pack(pady=5, side= TOP)
 
-def storeLink(tempDeviceId):
+def storeLink(tempDeviceId,deviceState):
     print(userId)
     print(tempDeviceId)
     database.cursor.execute("SELECT id from link WHERE userid = ? AND deviceid = ?",(userId,tempDeviceId))
     if not database.cursor.fetchall():  # An empty result evaluates to False.
-        database.cursor.execute("""INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)""",(userId,tempDeviceId,light_1.state.get()))
+        database.cursor.execute("""INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)""",(userId,tempDeviceId,deviceState))
     else:
-        database.cursor.execute("""UPDATE link SET state=? WHERE userid=? AND deviceid=?""",(light_1.state.get(),userId,tempDeviceId))
+        database.cursor.execute("""UPDATE link SET state=? WHERE userid=? AND deviceid=?""",(deviceState,userId,tempDeviceId))
     database.connection.commit()
 
 def settings():
@@ -184,8 +184,9 @@ def settings():
     
     light_1 = Device(1, BooleanVar())
     light_1.state.set(True)
-    light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1.state, command = lambda: storeLink(light_1.deviceid))
+    light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1.state, command = lambda: storeLink(light_1.deviceid,light_1.state.get()))
     light_1CheckButton.pack()
+    
     
     database.cursor.execute("SELECT email FROM accounts WHERE username = ? AND password = ?",(logInName.get(),logInPass.get()))
     email = database.cursor.fetchone()
