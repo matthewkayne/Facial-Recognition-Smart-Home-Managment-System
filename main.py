@@ -8,7 +8,6 @@ from tkinter import *
 from PIL import Image, ImageTk
 # Imporrts the database.py and smtp.py file
 import database, smtp
-requests.post("https://maker.ifttt.com/trigger/spotify/with/key/fZQacqZEzguEOUTC2dSECCzzSSE7LmZdtiETmnAIWQx")
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -162,8 +161,6 @@ def new_person():
     button.pack(pady=5, side= TOP)
 
 def storeLink(tempDeviceId):
-    print(light_1.state)
-
     database.cursor.execute("SELECT userid from link WHERE userid = ? AND deviceid = ?",(userId,tempDeviceId))
     if not database.cursor.fetchall():  # An empty result evaluates to False.
         database.cursor.execute("""INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)""",(userId,tempDeviceId,1))
@@ -174,7 +171,6 @@ def storeLink(tempDeviceId):
 def settings():
     global settingsPage
     global light_1
-    global spotify
 
     settingsPage = Toplevel(window)
     settingsPage.title("Settings")
@@ -188,7 +184,6 @@ def settings():
     light_1.state.set(False)
     light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1.state, command = lambda: storeLink(light_1.deviceid))
     light_1CheckButton.pack()
-    
     
     database.cursor.execute("SELECT email FROM accounts WHERE username = ? AND password = ?",(logInName.get(),logInPass.get()))
     email = database.cursor.fetchone()
