@@ -1,13 +1,16 @@
-# Imports all the needed libraries
-from posixpath import join
-from cv2 import data
-import face_recognition, cv2, os, glob, requests, smtplib, asyncio
+# Imports multiple packages for  face recognition, camera, operating system, webhook and email control
+import face_recognition, cv2, os, glob, requests, smtplib
+# Imports numpy for facial recognition calculations
 import numpy as np
+# Imports tkinter for the GUI creation
 import tkinter as tk
 from tkinter import *
+# Imports pillow
 from PIL import Image, ImageTk
+# Imports TP-Link smart home API
+import asyncio
 from kasa import SmartBulb
-# Imporrts the database.py file
+# Imports the database.py file
 import database
 
 # Get a reference to webcam #0 (the default one)
@@ -41,12 +44,10 @@ face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
-previous_name = None 
-name=None
+name = None
 
 def run():
     global process_this_frame
-    global previous_name
     global name
 
     # Grab a single frame of video
@@ -247,7 +248,6 @@ def log_in():
 
     logInPage = Toplevel(window)
     logInPage.title("Log In")
-
     logInPage.geometry("750x250")
     
     # Create an Entry Widget in the LogInPage window for name
@@ -285,7 +285,6 @@ def faceControl():
                 fcDeviceName = database.cursor.fetchone()[0]
                 database.cursor.execute("SELECT state FROM link WHERE userid = ? AND deviceId = ?",(fcUserId,fcDeviceId))
                 fcState = sum(database.cursor.fetchone())
-
 
                 if fcState == 0:
                     fcStateString = "_off"
