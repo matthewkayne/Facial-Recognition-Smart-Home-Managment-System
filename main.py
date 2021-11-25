@@ -161,8 +161,6 @@ def new_person():
     button.pack(pady=5, side= TOP)
 
 def storeLink(tempDeviceId,deviceState):
-    print(userId)
-    print(tempDeviceId)
     database.cursor.execute("SELECT id from link WHERE userid = ? AND deviceid = ?",(userId,tempDeviceId))
     if not database.cursor.fetchall():  # An empty result evaluates to False.
         database.cursor.execute("""INSERT INTO link (userid, deviceid, state) VALUES (?, ?, ?)""",(userId,tempDeviceId,deviceState))
@@ -265,21 +263,25 @@ def log_in():
     button.pack(pady=5, side= TOP)
 
 def faceControl():
-    database.cursor.execute("SELECT id FROM accounts WHERE filename = ?",((name+".jpg").replace(" ",""),))
-    fcUserId = sum(database.cursor.fetchone())
-    database.cursor.execute("SELECT deviceid FROM link WHERE userid = ?",(fcUserId,))
-    fcDeviceId = sum(database.cursor.fetchone())
-    database.cursor.execute("SELECT devicename FROM devices WHERE id = ?",(fcDeviceId,))
-    fcDeviceName = database.cursor.fetchone()[0]
-    database.cursor.execute("SELECT state FROM link WHERE userid = ? AND deviceId = ?",(fcUserId,fcDeviceId))
-    fcState = sum(database.cursor.fetchone())
-    
-    if fcState == 0:
-        fcStateString = "_off"
-    else:
-        fcStateString = "_on"
-    requests.post("https://maker.ifttt.com/trigger/"+fcDeviceName+fcStateString+"/with/key/fZQacqZEzguEOUTC2dSECCzzSSE7LmZdtiETmnAIWQx")
+    database.cursor.execute("SELECT COUNT(*) FROM link")
+    db = sum(database.cursor.fetchone())
 
+    for x in range(db):
+            database.cursor.execute("SELECT id FROM accounts WHERE filename = ?",((name+".jpg").replace(" ",""),))
+            fcUserId = sum(database.cursor.fetchone())
+            database.cursor.execute("SELECT deviceid FROM link WHERE userid = ? AND id= ?",(fcUserId,x+1,))
+            fcDeviceId = sum(database.cursor.fetchone())
+            database.cursor.execute("SELECT devicename FROM devices WHERE id = ?",(fcDeviceId,))
+            fcDeviceName = database.cursor.fetchone()[0]
+            database.cursor.execute("SELECT state FROM link WHERE userid = ? AND deviceId = ?",(fcUserId,fcDeviceId))
+            fcState = sum(database.cursor.fetchone())
+
+            if fcState == 0:
+                fcStateString = "_off"
+            else:
+                fcStateString = "_on"
+            requests.post("https://maker.ifttt.com/trigger/"+fcDeviceName+fcStateString+"/with/key/fZQacqZEzguEOUTC2dSECFBo0xcNEk4ofpmJJoy2yIg")
+            
 # Sets up GUI    
 window = tk.Tk()
 window.title("A-Level-Project")
