@@ -16,8 +16,6 @@ devices(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""")
 cursor.execute("""CREATE TABLE IF NOT EXISTS
 link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, state INTEGER DEFAULT 0, FOREIGN KEY(userid) REFERENCES accounts(id), FOREIGN KEY(deviceid) REFERENCES devices(id))""")
 
-connection.commit()
-
 # Adds new row to accounts table
 def addAccount(mainName,mainPass,mainEmail,mainFileName):
     cursor.execute("INSERT INTO accounts (username, password, email,filename) VALUES (?, ?, ?, ?)",(mainName,mainPass,mainEmail,mainFileName))

@@ -1,11 +1,12 @@
 # Imports all the needed libraries
 from posixpath import join
 from cv2 import data
-import face_recognition, cv2, os, glob, requests, smtplib
+import face_recognition, cv2, os, glob, requests, smtplib, asyncio
 import numpy as np
 import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
+from kasa import SmartBulb
 # Imporrts the database.py file
 import database
 
@@ -196,8 +197,7 @@ def sendData(recipientEmail,recipientData):
         
 def settings():
     global settingsPage
-    global light_1
-
+    
     settingsPage = Toplevel(window)
     settingsPage.title("Settings")
 
@@ -211,6 +211,10 @@ def settings():
     light_1CheckButton = Checkbutton(settingsPage, text = "Light On/Off", variable=light_1.state, command = lambda: storeLink(light_1.deviceid,light_1.state.get()))
     light_1CheckButton.pack()
     
+    spotify = Device(2, BooleanVar())
+    spotify.state.set(True)
+    spotifyCheckButton = Checkbutton(settingsPage, text = "Spotify On/Off", variable=spotify.state, command = lambda: storeLink(spotify.deviceid,spotify.state.get()))
+    spotifyCheckButton.pack()
     
     database.cursor.execute("SELECT email FROM accounts WHERE username = ? AND password = ?",(logInName.get(),logInPass.get()))
     email = database.cursor.fetchone()
@@ -263,6 +267,9 @@ def log_in():
     button.pack(pady=5, side= TOP)
 
 def faceControl():
+    
+    light_1APIClass = SmartBulb("192.168.1.79")
+
     if name == None:
         pass
     else:
@@ -279,11 +286,18 @@ def faceControl():
                 database.cursor.execute("SELECT state FROM link WHERE userid = ? AND deviceId = ?",(fcUserId,fcDeviceId))
                 fcState = sum(database.cursor.fetchone())
 
+
                 if fcState == 0:
                     fcStateString = "_off"
                 else:
                     fcStateString = "_on"
-                requests.post("https://maker.ifttt.com/trigger/"+fcDeviceName+fcStateString+"/with/key/fZQacqZEzguEOUTC2dSECFBo0xcNEk4ofpmJJoy2yIg")
+                    
+                if fcDeviceId == 1 and fcState == 1:
+                    asyncio.run(light_1APIClass.turn_on())
+                if fcDeviceId == 1 and fcState == 0:
+                    asyncio.run(light_1APIClass.turn_off())
+                else:
+                    requests.post("https://maker.ifttt.com/trigger/"+fcDeviceName+fcStateString+"/with/key/fZQacqZEzguEOUTC2dSECFBo0xcNEk4ofpmJJoy2yIg")
                 
 # Sets up GUI    
 window = tk.Tk()
