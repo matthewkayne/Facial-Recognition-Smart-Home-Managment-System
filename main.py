@@ -36,7 +36,7 @@ for i in range(number_files):
     known_face_encodings.append(globals()['image_encoding_{}'.format(i)])
 
     # Creates array of known names
-    names[i] = names[i].replace("known_people/", "")  
+    names[i] = names[i].replace("known_people/", "")
     known_face_names.append(names[i])
 
 # Initialize some variables
@@ -72,9 +72,7 @@ def run():
 
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-            
             name = "Unknown"
-
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
 
@@ -85,7 +83,6 @@ def run():
                 name = name.replace("known_people"," ")
                 name = name.replace(".jpg"," ") 
                 name = name.replace("/Users/matthewkayne/Documents/School/A-Levels/Computer Science/Project/Code/","")               
-
                 # Returns the name on the GUI
                 text_box.delete(1.0, "end-1c")
                 text_box.insert("end-1c", name)
@@ -161,7 +158,7 @@ def new_person():
     # Creates a Button Widget in the Toplevel Window
     button= Button(top, text="Ok", command=saveAccount)
     button.pack(pady=5, side= TOP)
-
+    
 def storeLink(tempDeviceId,deviceState):
     database.cursor.execute("SELECT id from link WHERE userid = ? AND deviceid = ?",(userId,tempDeviceId))
     if not database.cursor.fetchall():  # An empty result evaluates to False.
