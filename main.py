@@ -10,8 +10,15 @@ from PIL import Image, ImageTk
 # Imports TP-Link smart home API
 import asyncio
 from kasa import SmartBulb
+# Imports dotenv allowing me to store and acces environment variables
+from dotenv import load_dotenv
 # Imports the database.py file
 import database
+
+load_dotenv()
+EMAIL = os.getenv('EMAIL')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+BULB_IP = os.getenv('BULB_IP')
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -169,8 +176,8 @@ def storeLink(tempDeviceId,deviceState):
     
 # Sends email to email supplied in parameter
 def sendData(recipientEmail,recipientData):
-    gmail_user = 'ALevelProject1@gmail.com'
-    gmail_password = 'Password12!'
+    gmail_user = EMAIL
+    gmail_password = EMAIL_PASSWORD
 
     to = [recipientEmail]
     subject = 'Your Private Data'
@@ -265,7 +272,7 @@ def log_in():
 
 def faceControl():
     
-    light_1APIClass = SmartBulb("192.168.1.79")
+    light_1APIClass = SmartBulb(BULB_IP)
 
     if name == None:
         pass
@@ -290,8 +297,10 @@ def faceControl():
                     
                 if fcDeviceId == 1 and fcState == 1:
                     asyncio.run(light_1APIClass.turn_on())
+                    print("Light On")
                 if fcDeviceId == 1 and fcState == 0:
                     asyncio.run(light_1APIClass.turn_off())
+                    print("Light Off")
                 else:
                     requests.post("https://maker.ifttt.com/trigger/"+fcDeviceName+fcStateString+"/with/key/fZQacqZEzguEOUTC2dSECFBo0xcNEk4ofpmJJoy2yIg")
                 
