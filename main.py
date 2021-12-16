@@ -1,6 +1,6 @@
-import cv2 
+import cv2
 import os
-import glob 
+import glob
 import smtplib
 import asyncio
 import requests
@@ -8,7 +8,7 @@ import numpy as np
 import tkinter as tk
 from tkinter import *
 from kasa import SmartBulb
-import face_recognition 
+import face_recognition
 from dotenv import load_dotenv
 from PIL import Image, ImageTk
 import database # Imports from local database.py file
@@ -36,7 +36,7 @@ for i in range(number_files):
     globals()['image_encoding_{}'.format(i)] = face_recognition.face_encodings(globals()['image_{}'.format(i)])[0]
     known_face_encodings.append(globals()['image_encoding_{}'.format(i)])
 
-    names[i] = names[i].replace("known_people/", "") 
+    names[i] = names[i].replace("known_people/", "")
     known_face_names.append(names[i])
 
 face_locations = []
@@ -84,12 +84,12 @@ def run():
                 name = known_face_names[best_match_index] # Creates and cleans up the name of the matching image
                 name = name.replace("known_people"," ")
                 name = name.replace(".jpg"," ")
-                name = name.replace("/Users/matthewkayne/Documents/School/A-Levels/Computer Science/Project/Code/","")     
+                name = name.replace("/Users/matthewkayne/Documents/School/A-Levels/Computer Science/Project/Code/","")
                 
                 text_box.delete(1.0, "end-1c")
                 text_box.insert("end-1c", name)
 
-                return name 
+                return name
             
             face_names.append(name)
             
