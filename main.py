@@ -63,6 +63,7 @@ top = None
 settingsPage = None
 userId = None
 logInName = None
+logInPass = None    
 
 def run():
     global process_this_frame
