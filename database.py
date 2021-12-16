@@ -1,30 +1,26 @@
 import sqlite3
 
-# Define connection and cursor
-connection = sqlite3.connect('database.db')
+connection = sqlite3.connect('database.db') # Define connection and cursor
 cursor = connection.cursor()
 
-# Create accounts table
 cursor.execute("""CREATE TABLE IF NOT EXISTS
-accounts(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, email TEXT,filename TEXT)""")
+accounts(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, email TEXT,filename TEXT)""") # Create accounts table
 
-# Create devices table
 cursor.execute("""CREATE TABLE IF NOT EXISTS
-devices(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""")
+devices(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""") # Create devices table
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS
 test(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""")
 
-# Create link table
 cursor.execute("""CREATE TABLE IF NOT EXISTS
-link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, state INTEGER DEFAULT 0, FOREIGN KEY(userid) REFERENCES accounts(id), FOREIGN KEY(deviceid) REFERENCES devices(id))""")
+link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, state INTEGER DEFAULT 0, FOREIGN KEY(userid) REFERENCES accounts(id), FOREIGN KEY(deviceid) REFERENCES devices(id))""") # Create link table
 
-# Adds new row to accounts table
-def addAccount(mainName,mainPass,mainEmail,mainFileName):
+
+def addAccount(mainName,mainPass,mainEmail,mainFileName): # Adds new row to accounts table
     cursor.execute("INSERT INTO accounts (username, password, email,filename) VALUES (?, ?, ?, ?)",(mainName,mainPass,mainEmail,mainFileName))
     connection.commit()
 
-# Adds new row to devices table
-def addDevice(deviceName):
+
+def addDevice(deviceName): # Adds new row to devices table
     cursor.execute("INSERT INTO devices (devicename) VALUES (?)",(deviceName,))
     connection.commit()
