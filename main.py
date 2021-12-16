@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 # Imports the database.py file
 import database
 
+# Gets secrets from .env
 load_dotenv()
 EMAIL = os.getenv('EMAIL')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
