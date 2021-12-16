@@ -23,7 +23,7 @@ link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, sta
 def addAccount(mainName,mainPass,mainEmail,mainFileName):
     cursor.execute("INSERT INTO accounts (username, password, email,filename) VALUES (?, ?, ?, ?)",(mainName,mainPass,mainEmail,mainFileName))
     connection.commit()
-    
+
 # Adds new row to devices table
 def addDevice(deviceName):
     cursor.execute("INSERT INTO devices (devicename) VALUES (?)",(deviceName,))

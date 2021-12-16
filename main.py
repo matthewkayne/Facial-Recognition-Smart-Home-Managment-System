@@ -53,6 +53,16 @@ face_encodings = []
 face_names = []
 process_this_frame = True
 name = None
+in_name = None
+in_pass = None
+temp_name = None
+entryName = None
+entryPass = None
+entryEmail = None
+top = None
+settingsPage = None
+userId = None
+logInName = None
 
 def run():
     global process_this_frame
@@ -89,14 +99,14 @@ def run():
                 # Creates and cleans up the name of the matching image
                 name = known_face_names[best_match_index]
                 name = name.replace("known_people"," ")
-                name = name.replace(".jpg"," ") 
-                name = name.replace("/Users/matthewkayne/Documents/School/A-Levels/Computer Science/Project/Code/","")               
+                name = name.replace(".jpg"," ")
+                name = name.replace("/Users/matthewkayne/Documents/School/A-Levels/Computer Science/Project/Code/","")     
                 # Returns the name on the GUI
                 text_box.delete(1.0, "end-1c")
                 text_box.insert("end-1c", name)
 
                 return name
-                
+            
             face_names.append(name)
             
     process_this_frame = not process_this_frame
@@ -235,7 +245,7 @@ def settings():
 
 def getUserId(userName):
     database.cursor.execute("SELECT id FROM accounts WHERE username=?",(userName,))
-    return sum(database.cursor.fetchone())   
+    return sum(database.cursor.fetchone())
 
 def accountCheck(inName, inPass):
     global userId
@@ -305,7 +315,7 @@ def faceControl():
                 else:
                     requests.post("https://maker.ifttt.com/trigger/"+fcDeviceName+fcStateString+"/with/key/fZQacqZEzguEOUTC2dSECFBo0xcNEk4ofpmJJoy2yIg")
                 
-# Sets up GUI    
+# Sets up GUI
 window = tk.Tk()
 window.title("A-Level-Project")
 window.geometry("1000x1000")
