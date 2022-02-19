@@ -1,6 +1,6 @@
 # A-Level-Project - Facial Recognition Smart Home Managment System
 
-[![CodeFactor](https://www.codefactor.io/repository/github/matthewkayne/a-level-project/badge?s=2b1b1748c79cc9f5128a1e21a6262eabe76a1508)](https://www.codefactor.io/repository/github/matthewkayne/a-level-project) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ff43f46bee094f6ca7ce85ea959c6f1c)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=matthewkayne/A-Level-Project&amp;utm_campaign=Badge_Grade)
+[![CodeFactor](https://www.codefactor.io/repository/github/matthewkayne/facial-recognition-smart-home-managment-system/badge)](https://www.codefactor.io/repository/github/matthewkayne/facial-recognition-smart-home-managment-system)
 
 [![PyPi version fury.io](https://badge.fury.io/py/numpy.svg)](https://pypi.org/project/numpy/) [![PyPi version fury.io](https://badge.fury.io/py/Pillow.svg)](https://pypi.org/project/Pillow/) [![PyPi version fury.io](https://badge.fury.io/py/requests.svg)](https://pypi.org/project/requests/) [![PyPi version fury.io](https://badge.fury.io/py/face-recognition.svg)](https://pypi.org/project/face-recognition/) [![PyPi version fury.io](https://badge.fury.io/py/Kasa.svg)](https://pypi.org/project/Kasa/)
 
