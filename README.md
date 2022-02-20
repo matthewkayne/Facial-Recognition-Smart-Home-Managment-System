@@ -2,6 +2,4 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/matthewkayne/facial-recognition-smart-home-managment-system/badge)](https://www.codefactor.io/repository/github/matthewkayne/facial-recognition-smart-home-managment-system)
 
-[![PyPi version fury.io](https://badge.fury.io/py/numpy.svg)](https://pypi.org/project/numpy/) [![PyPi version fury.io](https://badge.fury.io/py/Pillow.svg)](https://pypi.org/project/Pillow/) [![PyPi version fury.io](https://badge.fury.io/py/requests.svg)](https://pypi.org/project/requests/) [![PyPi version fury.io](https://badge.fury.io/py/face-recognition.svg)](https://pypi.org/project/face-recognition/) [![PyPi version fury.io](https://badge.fury.io/py/Kasa.svg)](https://pypi.org/project/Kasa/)
-
 This program is a home automation program with a variety of functionality. Firstly, it can automatically set timers and schedules to automate pre-set commands to control devices around the house (e.g., turning off all the lights after 11:00). Another feature would-be long-distance control, this would allow you to adjust devices from outside your home (e.g., turn on the washer prior to you getting home). Finally, there will be a facial recognition element that will allow you to walk into the home and be recognised by the program. This recognition will link to your pre-set commands that will run as you enter the house.
