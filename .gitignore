@@ -1,4 +1,8 @@
-# System file
+# System files
 .DS_Store
 # Python files
 __pycache__/
+# Other Files
+.env
+known_people/*
+database.db
