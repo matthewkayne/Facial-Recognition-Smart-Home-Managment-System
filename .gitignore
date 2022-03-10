@@ -5,4 +5,5 @@ __pycache__/
 # Other Files
 .env
 known_people/*
+!known_people/.gitkeep 
 database.db
