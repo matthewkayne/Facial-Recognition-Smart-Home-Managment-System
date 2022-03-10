@@ -18,6 +18,7 @@ EMAIL = os.getenv('EMAIL')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 BULB_IP = os.getenv('BULB_IP')
 
+
 video_capture = cv2.VideoCapture(0) # Get a reference to webcam #0 (the default one)
 
 known_face_encodings = []
@@ -56,13 +57,11 @@ userId = None
 logInName = None
 logInPass = None
 
-
 def run():
     global process_this_frame
     global name
 
     ret, frame = video_capture.read() # Grab a single frame of video
-    
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25) # Resize frame of video to 1/4 size for faster face recognition processing
     
     rgb_small_frame = small_frame[:, :, ::-1] # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
@@ -88,6 +87,7 @@ def run():
                 
                 text_box.delete(1.0, "end-1c")
                 text_box.insert("end-1c", name)
+
 
                 return name
             
@@ -152,6 +152,7 @@ def new_person():
     
     labelPass = Label(top, text = "Password")
     entryPass = Entry(top, width= 25) # Create an Entry Widget in the Toplevel window for password
+    entryPass.config(show="*")
     labelPass.pack()
     entryPass.pack()
     
@@ -258,6 +259,7 @@ def log_in():
     
     labelPass = Label(logInPage, text = "Password") # Create an Entry Widget in the LogInPage window for password
     logInPass= Entry(logInPage, width= 25)
+    logInPass.config(show="*")
     labelPass.pack()
     logInPass.pack()
     
@@ -273,6 +275,7 @@ def faceControl():
     else:
         database.cursor.execute("SELECT COUNT(*) FROM link")
         db = sum(database.cursor.fetchone())
+
 
         for x in range(db):
                 database.cursor.execute("SELECT id FROM accounts WHERE filename = ?",((name+".jpg").replace(" ",""),))
@@ -321,7 +324,6 @@ label = Label(window, width=450, height=450)
 label.grid(row=140, column=190)
 
 cap = cv2.VideoCapture(0)
-
 
 def show_frames(): # Define function to show frame
 
