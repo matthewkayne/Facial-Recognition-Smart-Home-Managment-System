@@ -4,6 +4,7 @@ import glob
 import smtplib
 import asyncio
 import requests
+import hashlib
 import numpy as np
 import tkinter as tk
 from tkinter import *
@@ -17,6 +18,10 @@ load_dotenv() # Gets secrets from .env
 EMAIL = os.getenv('EMAIL')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 BULB_IP = os.getenv('BULB_IP')
+
+def myHash(data):
+    hashedData = hashlib.sha256(bytes(data, encoding=("utf-8"))).hexdigest()
+    return hashedData
 
 
 video_capture = cv2.VideoCapture(0) # Get a reference to webcam #0 (the default one)
@@ -116,7 +121,7 @@ def saveAccount():
     fileName = fileName.replace(" ","-")
     fileName= fileName+'.jpg'
 
-    database.addAccount(in_name,in_pass,in_email,fileName)
+    database.addAccount(in_name,myHash(in_pass),in_email,fileName)
 
     os.rename(temp_name,('known_people/'+fileName))
     top.destroy()
@@ -216,9 +221,9 @@ def settings():
     spotifyCheckButton = Checkbutton(settingsPage, text = "Spotify On/Off", variable=spotify.state, command = lambda: storeLink(spotify.deviceid,spotify.state.get()))
     spotifyCheckButton.pack()
     
-    database.cursor.execute("SELECT email FROM accounts WHERE username = ? AND password = ?",(logInName.get(),logInPass.get()))
+    database.cursor.execute("SELECT email FROM accounts WHERE username = ? AND password = ?",(logInName.get(),myHash(logInPass.get())))
     email = database.cursor.fetchone()
-    database.cursor.execute("SELECT * FROM accounts WHERE username = ? AND password = ?",(logInName.get(),logInPass.get(),))
+    database.cursor.execute("SELECT username, email FROM accounts WHERE username = ? AND password = ?",(logInName.get(),myHash(logInPass.get())))
     data = database.cursor.fetchall()
 
     dataButton = Button(settingsPage, text="Send My Private Data", command= lambda: [sendData(email[0],str(data))])
@@ -238,7 +243,15 @@ def accountCheck(inName, inPass):
 
     database.cursor.execute("SELECT username FROM accounts WHERE username = ? AND password = ?",(inName,inPass))
     if not database.cursor.fetchall():
-        pass
+        errorPage = Toplevel(window)
+        errorPage.title("Error")
+        errorPage.geometry("750x250")
+        labelError = Label(errorPage, text = "Incorrect Name or Password")
+        labelError.config(font=("Calbiri", 44))
+        exitButton = Button(errorPage, text="Exit", command=errorPage.destroy)
+        labelError.pack()
+        exitButton.pack()
+        
     else:
         userId = getUserId(inName)
         settings()
@@ -263,7 +276,7 @@ def log_in():
     labelPass.pack()
     logInPass.pack()
     
-    button= Button(logInPage, text="Ok", command=lambda: [accountCheck(logInName.get(),logInPass.get()),logInPage.destroy()]) # Creates a Button Widget in the LogInPage Window
+    button= Button(logInPage, text="Ok", command=lambda: [accountCheck(logInName.get(),myHash(logInPass.get())),logInPage.destroy()]) # Creates a Button Widget in the LogInPage Window
     button.pack(pady=5, side= TOP)
 
 
