@@ -7,3 +7,4 @@ __pycache__/
 known_people/*
 !known_people/.gitkeep 
 database.db
+test.py
