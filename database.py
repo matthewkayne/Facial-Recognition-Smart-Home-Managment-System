@@ -17,7 +17,7 @@ link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, sta
 
 
 def addAccount(mainName,mainPass,mainEmail,mainFileName): # Adds new row to accounts table
-    cursor.execute("INSERT INTO accounts (username, password, email,filename) VALUES (?, ?, ?, ?)",(mainName,mainPass,mainEmail,mainFileName))
+    cursor.execute("INSERT INTO accounts (username, password, email, filename) VALUES (?, ?, ?, ?)",(mainName,mainPass,mainEmail,mainFileName))
     connection.commit()
 
 
