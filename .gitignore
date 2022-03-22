@@ -1,10 +1,15 @@
 # System files
 .DS_Store
+
 # Python files
 __pycache__/
+
 # Other Files
 .env
 known_people/*
 !known_people/.gitkeep 
 database.db
 test.py
+
+# Visual Studio Code
+.vscode
