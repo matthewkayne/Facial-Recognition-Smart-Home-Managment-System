@@ -10,6 +10,8 @@ known_people/*
 !known_people/.gitkeep 
 database.db
 test.py
+test.db
+database_test.py
 
 # Visual Studio Code
 .vscode
