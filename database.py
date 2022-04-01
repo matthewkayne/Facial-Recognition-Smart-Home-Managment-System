@@ -9,8 +9,7 @@ accounts(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, ema
 cursor.execute("""CREATE TABLE IF NOT EXISTS
 devices(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""") # Create devices table
 
-cursor.execute("""CREATE TABLE IF NOT EXISTS
-test(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""")
+
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS
 link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, state INTEGER DEFAULT 0, FOREIGN KEY(userid) REFERENCES accounts(id), FOREIGN KEY(deviceid) REFERENCES devices(id))""") # Create link table
@@ -23,4 +22,12 @@ def addAccount(mainName,mainPass,mainEmail,mainFileName): # Adds new row to acco
 
 def addDevice(deviceName): # Adds new row to devices table
     cursor.execute("INSERT INTO devices (devicename) VALUES (?)",(deviceName,))
+    connection.commit()
+
+def createTestTable():
+    cursor.execute("""CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""")
+    connection.commit()
+    
+def deleteTestTable():
+    cursor.execute("DROP TABLE IF EXISTS test")
     connection.commit()
