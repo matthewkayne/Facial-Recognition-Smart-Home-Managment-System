@@ -204,11 +204,11 @@ def sendData(recipientEmail, recipientData):  # Sends email to email supplied in
     body = recipientData
 
     email_text = """\
-    From: %s
-    To: %s
-    Subject: %s
+From: %s
+To: %s
+Subject: %s
 
-    %s
+%s
     """ % (gmail_user, ", ".join(to), subject, body)
 
     try:
