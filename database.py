@@ -27,7 +27,7 @@ def addDevice(deviceName): # Adds new row to devices table
 def createTestTable():
     cursor.execute("""CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""")
     connection.commit()
-    
+
 def deleteTestTable():
     cursor.execute("DROP TABLE IF EXISTS test")
     connection.commit()
