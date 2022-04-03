@@ -18,16 +18,20 @@ link(id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER, deviceid INTEGER, sta
 def addAccount(mainName,mainPass,mainEmail,mainFileName): # Adds new row to accounts table
     cursor.execute("INSERT INTO accounts (username, password, email, filename) VALUES (?, ?, ?, ?)",(mainName,mainPass,mainEmail,mainFileName))
     connection.commit()
+    
+def deleteAccount(id): # Deletes row from accounts table
+    cursor.execute("DELETE FROM accounts WHERE id=?",(str(id)))
+    connection.commit()
 
 
 def addDevice(deviceName): # Adds new row to devices table
     cursor.execute("INSERT INTO devices (devicename) VALUES (?)",(deviceName,))
     connection.commit()
 
-def createTestTable():
+def createTestTable(): # Creates test table
     cursor.execute("""CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY AUTOINCREMENT, devicename TEXT)""")
     connection.commit()
 
-def deleteTestTable():
+def deleteTestTable(): # Deletes test table
     cursor.execute("DROP TABLE IF EXISTS test")
     connection.commit()
