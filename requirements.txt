@@ -4,4 +4,4 @@ numpy==1.22.2
 opencv_python==4.5.5.62
 Pillow==9.3.0
 python-dotenv==0.19.2
-requests==2.27.1
+requests==2.31.0
